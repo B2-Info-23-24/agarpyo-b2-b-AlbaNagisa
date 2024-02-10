@@ -1,7 +1,6 @@
 import pygame
 from states.base import Base
 
-
 class Menu(Base):
     def __init__(self):
         super(Menu, self).__init__()
@@ -10,7 +9,7 @@ class Menu(Base):
         self.next_state = "GAMEPLAY"
         
     def render_text(self, index):
-        color = pygame.Color("white") if index != self.active_index else pygame.Color("red") 
+        color = pygame.Color("Black") if index != self.active_index else pygame.Color("red") 
         return self.font.render(self.options[index], True, color)
     
     def get_text_position(self, text, index):
@@ -22,11 +21,13 @@ class Menu(Base):
             self.done = True
         elif self.active_index == 1:
             self.quit = True
-            
+    def startup(self, persistent):
+        persistent["ennemy"] = 2
+        return super().startup(persistent)
     def get_event(self, event):
         if event.type == pygame.QUIT:
             self.quit = True
-        elif event.type == pygame.KEYDOWN:
+        elif event.type == pygame.KEYUP:
             if event.key == pygame.K_UP:
                 self.active_index = 1 if self.active_index <= 0 else 0
             elif event.key == pygame.K_DOWN:
@@ -35,7 +36,7 @@ class Menu(Base):
                 self.handle_action()
                 
     def draw(self, surface):
-       surface.fill(pygame.Color("black"))
-       for index, option in enumerate(self.options):
-           text_render = self.render_text( index)
-           surface.blit(text_render, self.get_text_position(text_render, index))
+        super().draw(surface)
+        for index, option in enumerate(self.options):
+            text_render = self.render_text( index)
+            surface.blit(text_render, self.get_text_position(text_render, index))

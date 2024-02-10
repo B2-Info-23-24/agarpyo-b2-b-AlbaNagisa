@@ -1,32 +1,33 @@
 import pygame
 
 from states.base import Base
+import os
+import pygame
+from states.base import Base
+import pygame
+import os
 
 
-class GamOver(Base):
+class GameOver(Base):
     def __init__(self):
-       super(GamOver, self).__init__()
-       self.title = self.font.render("Game Over", True, pygame.Color("White"))
-       self.title_rect = self.title.get_rect(center=self.screen_rect.center)
-       self.instructions = self.font.render("Press Space to continue", True, pygame.Color("White"))
-       instructions_center = (self.screen_rect.center[0], self.screen_rect.center[1] + 50)
-       self.instructions_rect = self.instructions.get_rect(center=instructions_center)
-       
+        super(GameOver, self).__init__()
+        self.title = self.font.render("Game Over", True, pygame.Color(os.environ['TextColor']))
+        self.title_rect = self.title.get_rect(center=self.screen_rect.center)
+        self.instructions = self.font.render("Press Escape to return to the main menu", True, pygame.Color(os.environ['TextColor']))
+        instructions_center = (self.screen_rect.center[0], self.screen_rect.center[1] + 50)
+        self.instructions_rect = self.instructions.get_rect(center=instructions_center)
+        
     def get_event(self, event):
         if event.type == pygame.QUIT:
             self.quit = True
         elif event.type == pygame.KEYUP:
-            if event.key == pygame.K_SPACE:
-                self.next_state = "GAMEPLAY"
-                self.done = True
-            elif event.key == pygame.K_RETURN:
+            if event.key == pygame.K_ESCAPE:
                 self.next_state = "MENU"
-                self.quit = True
-            elif event.key == pygame.K_ESCAPE:
-                self.quit = True
+                self.done = True
+            
                 
     def draw(self, surface):
-        surface.fill(pygame.Color("black"))
+        super().draw(surface)
         surface.blit(self.title, self.title_rect)
         surface.blit(self.instructions, self.instructions_rect)
                 

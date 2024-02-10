@@ -19,4 +19,5 @@ class Base:
     def update(self, dt):
         pass
     def draw(self, surface):
+        surface.fill((255, 255, 255))
         pass
