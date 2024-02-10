@@ -14,7 +14,6 @@ os.environ['FontSize'] = "32"
 os.environ['CircleColor'] = "Red"
 os.environ["EnnemyColor"] = "Blue"
 os.environ["FoodColor"] = "Green"
-os.environ["DifficultyNumber"] = "2"
 
 
 pygame.init()

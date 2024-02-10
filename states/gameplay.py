@@ -12,7 +12,7 @@ class Gameplay(Base):
         self.timeLeft = self.totalTime
         self.elapsed_time = 0
         self.speed = 100
-        self.timer = self.font.render(str(self.timeLeft)+"s", True, pygame.Color(os.environ['TextColor']))
+        self.timer = self.font.render("Time left: "+str(self.timeLeft)+'s', True, pygame.Color(os.environ['TextColor']))
         self.rect = pygame.Rect((0, 0), (40, 40))
         self.rect.center = self.screen_rect.center
         self.next_state = "GAME_OVER"
@@ -20,6 +20,9 @@ class Gameplay(Base):
         self.enemies = []
         self.foods = []
         self.point = self.font.render("Score: "+str(self.score), True, pygame.Color(os.environ['TextColor']))
+        self.difficulty_text = self.font.render("Difficulty: ", True, pygame.Color(os.environ['TextColor']))
+        self.size_text = self.font.render("Size: ", True, pygame.Color(os.environ['TextColor']))
+        self.speed_text = self.font.render("Speed: ", True, pygame.Color(os.environ['TextColor']))
         
         
     def get_event(self, event):
@@ -44,6 +47,7 @@ class Gameplay(Base):
     def startup(self, persistent):
         super().startup(persistent)
         self.reset()
+        self.difficulty_text = self.font.render("Difficulty: "+ str(self.persist["difficulty"]), True, pygame.Color(os.environ['TextColor']))
         [self.spawn_ennemy() for _ in range(self.persist["ennemy"])]
         [self.spawn_food() for _ in range(self.persist["food"])]
         print(persistent)
@@ -85,8 +89,8 @@ class Gameplay(Base):
             self.speed = 500
         
     def eat_ennemy(self):
-        self.speed //= int(os.environ["DifficultyNumber"])
-        self.rect.width //= int(os.environ["DifficultyNumber"])
+        self.speed //= int(self.persist["difficulty_number"])
+        self.rect.width //= int(self.persist["difficulty_number"])
         if self.rect.width < 40:
             self.width = 40
         if self.speed < 100:
@@ -120,7 +124,10 @@ class Gameplay(Base):
         self.teleport()
         self.elapsed_time += dt
         self.timeLeft = self.totalTime - int(self.elapsed_time)
-        self.timer = self.font.render(str(self.timeLeft)+'s', True, pygame.Color(os.environ['TextColor']))
+        self.timer = self.font.render("Time left: "+str(self.timeLeft)+'s', True, pygame.Color(os.environ['TextColor']))
+        self.point = self.font.render("Score: "+str(self.score), True, pygame.Color(os.environ['TextColor']))
+        self.size_text = self.font.render("Size: "+str(self.rect.width), True, pygame.Color(os.environ['TextColor']))
+        self.speed_text = self.font.render("Speed: "+str(self.speed), True, pygame.Color(os.environ['TextColor']))
         if self.timeLeft <= 0:
             self.next_state = "GAME_OVER"
             self.done = True
@@ -135,8 +142,12 @@ class Gameplay(Base):
         for enemy in self.enemies:
             pygame.draw.circle(surface, pygame.Color(os.environ["EnnemyColor"]), enemy.center, enemy.width // 2)
         
-        self.point = self.font.render("Score: "+str(self.score), True, pygame.Color(os.environ['TextColor']))
+    
         surface.blit(self.timer, (10, 10))
         surface.blit(self.point, (1280-self.point.get_width()-10, 10))
+        surface.blit(self.difficulty_text, (1280-self.difficulty_text.get_width()-10, 30))
+        surface.blit(self.size_text, (1280-self.size_text.get_width()-10, 50))
+        surface.blit(self.speed_text, (1280-self.speed_text.get_width()-10, 70))
+                
         
         

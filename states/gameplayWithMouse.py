@@ -8,7 +8,9 @@ class GameplayWithMouse(Gameplay):
     
         
     def moving(self, dt):
-        initial_position = pygame.math.Vector2(self.rect.center)
+       # initial_position = pygame.math.Vector2(self.rect.center)
+       
+       # c'est trop grave de faire des fonctions pour nomalize un vecteur mais qu'elle marche pas (je parle de la fonction normalize builtin de pygame) 
 
         mouse_x, mouse_y = pygame.mouse.get_pos()
 
@@ -25,5 +27,5 @@ class GameplayWithMouse(Gameplay):
             normalized_dy = 0
         self.rect.move_ip(normalized_dx * self.speed * dt, normalized_dy * self.speed * dt)
 
-        frame_distance = (pygame.math.Vector2(self.rect.center) - initial_position).length()
-        print(frame_distance)
+        # frame_distance = (pygame.math.Vector2(self.rect.center) - initial_position).length()
+        # print(frame_distance)
