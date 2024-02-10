@@ -2,11 +2,11 @@ import sys
 import pygame
 import os
 from game import Game
+from states.gameplayWithKeyboard import GameplayWithKeyboard
 from states.gameplayWithMouse import GameplayWithMouse
 from states.splash import Splash
 from states.menu import Menu
 from states.game_over import GameOver
-from states.gameplay import Gameplay
 
 os.environ['TextColor'] = "Black"
 os.environ['BackgroundColor'] = "White"
@@ -23,7 +23,7 @@ states = {
     "MENU": Menu(),
     "SPLASH": Splash(),
     "GAMEPLAY_MOUSE": GameplayWithMouse(),
-    "GAMEPLAY": Gameplay(),
+    "GAMEPLAY": GameplayWithKeyboard(),
     "GAME_OVER": GameOver(),
 }
 
