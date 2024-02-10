@@ -2,6 +2,7 @@ import sys
 import pygame
 import os
 from game import Game
+from states.gameplayWithMouse import GameplayWithMouse
 from states.splash import Splash
 from states.menu import Menu
 from states.game_over import GameOver
@@ -22,6 +23,7 @@ screen = pygame.display.set_mode((1280, 720))
 states = {
     "MENU": Menu(),
     "SPLASH": Splash(),
+    "GAMEPLAY_MOUSE": GameplayWithMouse(),
     "GAMEPLAY": Gameplay(),
     "GAME_OVER": GameOver(),
 }

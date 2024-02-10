@@ -13,7 +13,7 @@ class Gameplay(Base):
         self.elapsed_time = 0
         self.speed = 100
         self.timer = self.font.render(str(self.timeLeft)+"s", True, pygame.Color(os.environ['TextColor']))
-        self.rect = pygame.Rect((0, 0), (200, 200))
+        self.rect = pygame.Rect((0, 0), (40, 40))
         self.rect.center = self.screen_rect.center
         self.next_state = "GAME_OVER"
         self.score = 0
@@ -97,9 +97,8 @@ class Gameplay(Base):
         elif self.rect.y > self.screen_rect.height:
             self.rect.y = 0 - self.rect.height
     
-    def moving_with_keyboard(self, dt):
+    def moving(self, dt):
         keys = pygame.key.get_pressed()
-        
         if keys[pygame.K_UP]:
             self.rect.move_ip(0, -self.speed *dt) 
         if keys[pygame.K_DOWN]:
@@ -110,9 +109,8 @@ class Gameplay(Base):
             self.rect.move_ip(self.speed *dt, 0)
      
     def update(self, dt):
-        dt = dt/1000
-        
-        self.moving_with_keyboard(dt)            
+        dt/=1000
+        self.moving(dt)            
         self.check_collision()    
         self.teleport()
             

@@ -25,7 +25,7 @@ class Menu(Base):
             self.next_state = "GAMEPLAY"
             self.done = True
         elif self.active_index == 1:
-            self.next_state = "GAMEPLAY"
+            self.next_state = "GAMEPLAY_MOUSE"
             self.done = True
         elif self.active_index == 2:
             self.quit = True
