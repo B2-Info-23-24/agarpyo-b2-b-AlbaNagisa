@@ -19,6 +19,8 @@ class Gameplay(Base):
         self.score = 0
         self.enemies = []
         self.foods = []
+        self.point = self.font.render("Score: "+str(self.score), True, pygame.Color(os.environ['TextColor']))
+        
         
     def get_event(self, event):
         if event.type == pygame.QUIT:
@@ -35,6 +37,9 @@ class Gameplay(Base):
         self.score = 0
         self.enemies = []
         self.foods = []
+        self.speed = 100
+        self.rect.width = 40
+        
         
     def startup(self, persistent):
         super().startup(persistent)
@@ -113,7 +118,6 @@ class Gameplay(Base):
         self.moving(dt)            
         self.check_collision()    
         self.teleport()
-            
         self.elapsed_time += dt
         self.timeLeft = self.totalTime - int(self.elapsed_time)
         self.timer = self.font.render(str(self.timeLeft)+'s', True, pygame.Color(os.environ['TextColor']))
@@ -121,7 +125,7 @@ class Gameplay(Base):
             self.next_state = "GAME_OVER"
             self.done = True
         
-    
+        
     def draw(self, surface):
         super().draw(surface)
         pygame.draw.circle(surface, pygame.Color(os.environ["CircleColor"]), self.rect.center, self.rect.width // 2)
@@ -130,6 +134,9 @@ class Gameplay(Base):
         
         for enemy in self.enemies:
             pygame.draw.circle(surface, pygame.Color(os.environ["EnnemyColor"]), enemy.center, enemy.width // 2)
-                   
+        
+        self.point = self.font.render("Score: "+str(self.score), True, pygame.Color(os.environ['TextColor']))
         surface.blit(self.timer, (10, 10))
+        surface.blit(self.point, (1280-self.point.get_width()-10, 10))
+        
         
