@@ -13,7 +13,7 @@ class Gameplay(Base):
         self.elapsed_time = 0
         self.speed = 100
         self.timer = self.font.render(str(self.timeLeft)+"s", True, pygame.Color(os.environ['TextColor']))
-        self.rect = pygame.Rect((0, 0), (80, 80))
+        self.rect = pygame.Rect((0, 0), (200, 200))
         self.rect.center = self.screen_rect.center
         self.next_state = "GAME_OVER"
         self.score = 0
@@ -34,11 +34,13 @@ class Gameplay(Base):
         self.rect.center = self.screen_rect.center
         self.score = 0
         self.enemies = []
+        self.foods = []
         
     def startup(self, persistent):
         super().startup(persistent)
         self.reset()
         [self.spawn_ennemy() for _ in range(self.persist["ennemy"])]
+        [self.spawn_food() for _ in range(self.persist["food"])]
         print(persistent)
         
     def spawn_ennemy(self):
@@ -55,14 +57,49 @@ class Gameplay(Base):
         
     def check_collision(self):
         for enemy in self.enemies:
-            distance = math.sqrt((self.rect.x - enemy.x)**2 + (self.rect.y - enemy.y)**2)
-            if (distance <= self.rect.width // 2 + enemy.width // 2) and self.rect.width // 2 >= enemy.width // 2:
-            
-                print("Collision detected!")
+            distance = math.sqrt((self.rect.centerx - enemy.centerx)**2 + (self.rect.centery - enemy.centery)**2)
+            if distance <= self.rect.width // 2 + enemy.width // 2 and self.rect.width > enemy.width:
+                self.enemies.remove(enemy)
+                self.eat_ennemy()
+                self.spawn_ennemy()
+
+        for food in self.foods:
+            distance = math.sqrt((self.rect.centerx - food.centerx)**2 + (self.rect.centery - food.centery)**2)
+            if distance <= self.rect.width // 2 + food.width // 2:
+                self.foods.remove(food)
+                self.eat()
+                self.spawn_food()
+                
+    def eat(self):
+        self.score += 1
+        self.speed += 5
+        self.rect.width += 2
+        if self.rect.width > 400:
+            self.rect.width = 400
+        if self.speed > 500:
+            self.speed = 500
+        
+    def eat_ennemy(self):
+        self.speed //= int(os.environ["DifficultyNumber"])
+        self.rect.width //= int(os.environ["DifficultyNumber"])
+        if self.rect.width < 40:
+            self.width = 40
+        if self.speed < 100:
+            self.speed = 100
+        
+    def teleport(self):
+        if self.rect.x+self.rect.width < 0:
+            self.rect.x = self.screen_rect.width
+        elif self.rect.x > self.screen_rect.width:
+            self.rect.x = 0 - self.rect.width
+        if self.rect.y +self.rect.height < 0:
+            self.rect.y = self.screen_rect.height
+        elif self.rect.y > self.screen_rect.height:
+            self.rect.y = 0 - self.rect.height
     
-    def update(self, dt):
+    def moving_with_keyboard(self, dt):
         keys = pygame.key.get_pressed()
-        dt = dt/1000
+        
         if keys[pygame.K_UP]:
             self.rect.move_ip(0, -self.speed *dt) 
         if keys[pygame.K_DOWN]:
@@ -71,9 +108,13 @@ class Gameplay(Base):
             self.rect.move_ip(-self.speed *dt, 0)
         if keys[pygame.K_RIGHT]:
             self.rect.move_ip(self.speed *dt, 0)
-            
-        self.check_collision()    
+     
+    def update(self, dt):
+        dt = dt/1000
         
+        self.moving_with_keyboard(dt)            
+        self.check_collision()    
+        self.teleport()
             
         self.elapsed_time += dt
         self.timeLeft = self.totalTime - int(self.elapsed_time)
@@ -86,8 +127,11 @@ class Gameplay(Base):
     def draw(self, surface):
         super().draw(surface)
         pygame.draw.circle(surface, pygame.Color(os.environ["CircleColor"]), self.rect.center, self.rect.width // 2)
-        for enemy in self.enemies:
-            pygame.draw.circle(surface, pygame.Color(os.environ["EnnemieColor"]), enemy.center, enemy.width // 2)
+        for food in self.foods:
+            pygame.draw.circle(surface, pygame.Color(os.environ["FoodColor"]), food.center, food.width // 2)
         
+        for enemy in self.enemies:
+            pygame.draw.circle(surface, pygame.Color(os.environ["EnnemyColor"]), enemy.center, enemy.width // 2)
+                   
         surface.blit(self.timer, (10, 10))
         
