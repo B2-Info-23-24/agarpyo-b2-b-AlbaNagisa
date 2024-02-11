@@ -30,11 +30,11 @@ dependencies:
 EOF
 
 conda env create -f environment.yml
-conda activate agarpyo
 ```
 
 ## How to run
 
 ```sh
+conda activate agarpyo
 python main.py
 ```
