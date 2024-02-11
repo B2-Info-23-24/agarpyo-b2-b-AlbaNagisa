@@ -6,7 +6,7 @@ Agarpyo est un jeu solo inspiré d'Agar.io, où le joueur doit atteindre le scor
 
 ## Requirements
 
-miniconda 23.11.0
+miniconda 23.11.0  
 N'importe quelle distribution linux (distribution utilisé Fedora 39)
 
 ## Installation
