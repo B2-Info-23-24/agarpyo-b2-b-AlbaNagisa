@@ -27,6 +27,9 @@ states = {
     "GAME_OVER": GameOver(),
 }
 
+pygame.mixer.music.load('./assets/music.wav')
+pygame.mixer.music.play(loops=-1)
+
 game = Game(screen, states, "SPLASH")
 game.run()
 
