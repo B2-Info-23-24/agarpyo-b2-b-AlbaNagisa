@@ -8,7 +8,7 @@ import random
 class Gameplay(Base):
     def __init__(self):
         super(Gameplay, self).__init__()
-        self.totalTime = 60
+        self.totalTime = 5
         self.timeLeft = self.totalTime
         self.elapsed_time = 0
         self.speed = 100
@@ -121,6 +121,7 @@ class Gameplay(Base):
         self.size_text = self.font.render("Size: "+str(self.rect.width), True, pygame.Color(os.environ['TextColor']))
         self.speed_text = self.font.render("Speed: "+str(self.speed), True, pygame.Color(os.environ['TextColor']))
         if self.timeLeft <= 0:
+            self.persist["score"] = self.score
             self.next_state = "GAME_OVER"
             self.done = True
         
@@ -128,12 +129,11 @@ class Gameplay(Base):
     def draw(self, surface):
         super().draw(surface)
         pygame.draw.circle(surface, pygame.Color(os.environ["CircleColor"]), self.rect.center, self.rect.width // 2)
-        for food in self.foods:
-            pygame.draw.circle(surface, pygame.Color(os.environ["FoodColor"]), food.center, food.width // 2)
-        
         for enemy in self.enemies:
             pygame.draw.circle(surface, pygame.Color(os.environ["EnnemyColor"]), enemy.center, enemy.width // 2)
-        
+            
+        for food in self.foods:
+            pygame.draw.circle(surface, pygame.Color(os.environ["FoodColor"]), food.center, food.width // 2)
     
         surface.blit(self.timer, (10, 10))
         surface.blit(self.point, (1280-self.point.get_width()-10, 10))
