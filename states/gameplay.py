@@ -8,7 +8,7 @@ import random
 class Gameplay(Base):
     def __init__(self):
         super(Gameplay, self).__init__()
-        self.totalTime = 5
+        self.totalTime = 60
         self.timeLeft = self.totalTime
         self.elapsed_time = 0
         self.speed = 100

@@ -57,6 +57,12 @@ class GameOver(Base):
             if event.key == pygame.K_ESCAPE:
                 self.next_state = "MENU"
                 self.done = True
+            elif event.key == pygame.K_UP:
+                self.selected = 0 if self.selected <= 0 else self.selected-1
+            elif event.key == pygame.K_DOWN:
+                self.selected = len(self.options)-1 if self.selected >= len(self.options)-1 else self.selected+1 
+            elif event.key == pygame.K_RETURN:
+                self.handle_action()
                 
         for index, button in enumerate(self.buttons):
             if button.is_hovered():

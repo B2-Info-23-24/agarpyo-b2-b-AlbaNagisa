@@ -9,6 +9,7 @@ class Menu(Base):
         self.active_index = 0
         self.instructions = "Use arrow keys to navigate and press enter to select an option"
         self.next_state = "GAMEPLAY"
+        self.title = pygame.font.Font(None, 50).render("Agarpyo", True, pygame.Color(os.environ['TextColor']))
         self.buttons = []
         self.difficulty = {}
         self.difficulty_show = False
@@ -107,6 +108,7 @@ class Menu(Base):
         
     def draw(self, surface):
         super().draw(surface)
+        surface.blit(self.title, self.get_text_position(self.title, -3))
         text_render_inst = self.font.render(self.instructions, True, pygame.Color("Black"))
         surface.blit(text_render_inst, self.get_text_position(text_render_inst, -1))
         for button in self.buttons:
