@@ -29,6 +29,7 @@ states = {
 
 pygame.mixer.music.load('./assets/music.wav')
 pygame.mixer.music.play(loops=-1)
+pygame.mixer.music.set_volume(0.2)
 
 game = Game(screen, states, "SPLASH")
 game.run()
