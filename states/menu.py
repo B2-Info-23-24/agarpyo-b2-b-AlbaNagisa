@@ -46,7 +46,7 @@ class Menu(Base):
             if self.active_index == 3:
                 return
             self.difficulty_selected = self.active_index
-            self.options  = ["Start with keyboard", "Start with mouse",f"Difficulty ({self.difficulty_options[self.difficulty_selected]})", "Quit"]
+            self.options  = ["Start with keyboard (directional arrows)", "Start with mouse",f"Difficulty ({self.difficulty_options[self.difficulty_selected]})", "Quit"]
             self.persist["ennemy"] = self.n_ennemy_per_difficulty[self.difficulty_selected]
             self.persist["food"] = self.n_food_per_difficulty[self.difficulty_selected]
             self.persist["difficulty"] = self.difficulty_options[self.difficulty_selected]
@@ -94,6 +94,14 @@ class Menu(Base):
                 self.active_index = len(self.options)-1 if self.active_index >= len(self.options)-1 else self.active_index+1 
             elif event.key == pygame.K_RETURN:
                 self.handle_action()
+            elif event.key == pygame.K_ESCAPE:
+                if self.difficulty_show:
+                    self.difficulty_show = False
+            elif event.key == pygame.K_p:
+                self.next_state = "GAMEPLAY"
+                self.done = True
+            elif event.key == pygame.K_q:
+                self.quit = True
                 
         for index, button in enumerate(self.buttons):
             if button.is_hovered():
